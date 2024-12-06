@@ -1,0 +1,211 @@
+:root {
+  --arrow-outline: red;
+  --arrow-color: blue;
+  --rotation: 0deg;
+}
+
+body {
+  background: url("../assets/effects/bg_pattern.svg") rgb(59, 2, 47) no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+p {
+  margin: 0;
+}
+
+.score-display {
+  width: fit-content;
+  padding: 15px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  border: inset 3px black;
+  border-radius: 10px;
+  grid-area: 1 / 2 / 1 / 2;
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  flex-grow: 1;
+  align-content: space-between;
+  margin: auto;
+  margin-top: 50px;
+  height: 95vh;
+  width: 95vw;
+}
+
+.start-button {
+  background-color: aquamarine;
+  color: blue;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: block;
+  position: absolute;
+  top: calc(50vh - 50px);
+  left: calc(50vw - 100px);
+  height: 100px;
+  width: 200px;
+  box-shadow: 7px 7px 0 0 darkcyan;
+  border-radius: 1000px;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  box-shadow: none;
+  transform: translate(10px, 10px);
+}
+
+.control-board {
+  --arrow-outline: white;
+  --arrow-color: rgb(34, 34, 34);
+  grid-area: 2 / 1 / 2 / 1;
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.avatar-container {
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  grid-area: 2 / 2 / 2 / 2;
+}
+
+.character {
+  max-width: 15vw;
+  display: block;
+  margin: auto;
+}
+
+.arrow-container {
+  height: 100px;
+  width: 100px;
+  margin: 20px;
+}
+
+.arrow {
+  display: block;
+  position: absolute;
+  margin: 30px;
+  height: 50px;
+  width: 50px;
+  background-color: var(--arrow-color);
+  border-radius: 100px 15px 10px 15px;
+  border: solid var(--arrow-outline) 5px;
+  animation-duration: 3s;
+  animation-name: glow;
+  animation-iteration-count: infinite;
+}
+
+.arrow::before {
+  content: "";
+  top: 10px;
+  left: 20px;
+  display: block;
+  transform: rotate(-45deg) translateY(-50px);
+  position: absolute;
+  height: 50px;
+  width: 30px;
+  background-color: var(--arrow-color);
+  border-radius: 5px;
+}
+
+.arrow::after {
+  content: "";
+  z-index: -1;
+  top: 10px;
+  left: 20px;
+  height: 50px;
+  width: 30px;
+  display: block;
+  position: absolute;
+  transform: rotate(-45deg) translateY(-57px);
+  background-color: var(--arrow-outline);
+  border: solid var(--arrow-outline) 5px;
+  border-radius: 5px;
+  animation-duration: 3s;
+  animation-name: glow;
+  animation-iteration-count: infinite;
+}
+
+.up {
+  transform: rotate(-135deg);
+}
+
+.right {
+  transform: rotate(-45deg);
+}
+
+.down {
+  transform: rotate(45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 0 0 var(--arrow-outline);
+  }
+
+  50% {
+    box-shadow: 0 0 7px 3px var(--arrow-outline);
+  }
+
+  to {
+    box-shadow: 0 0 0 0 var(--arrow-outline);
+  }
+}
+
+.row-spawner {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-area: 2 / 1 / 4 / 1;
+}
+
+.hidden {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .arrow-container {
+    height: 70px;
+    width: 60px;
+    margin: 10px;
+  }
+
+  .arrow {
+    height: 35px;
+    width: 35px;
+  }
+
+  .arrow::after {
+    height: 35px;
+    width: 25px;
+    top: 25px;
+    left: 30px;
+  }
+
+  .arrow::before {
+    height: 35px;
+    width: 25px;
+    top: 25px;
+    left: 30px;
+  }
+}
