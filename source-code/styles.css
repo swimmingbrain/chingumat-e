@@ -1,3 +1,14 @@
+@import "https://unpkg.com/open-props/open-props.min.css";
+@font-face {
+  font-family: 'Bumbastika';
+  src: url('../assets/branding/bumbastika.otf') format('opentype');
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+}
+
 :root {
   --arrow-outline: red;
   --arrow-color: blue;
@@ -8,7 +19,11 @@ body {
   background: url("../assets/effects/bg_pattern.svg") rgb(59, 2, 47) no-repeat;
   background-position: center;
   background-size: cover;
+  display: grid;
   overflow: hidden;
+  place-items: center;
+  min-height: 100vh;
+  font-family:  'Google Sans', sans-serif, system-ui;
 }
 
 p {
@@ -19,49 +34,27 @@ p {
   width: fit-content;
   padding: 15px;
   margin: auto;
-  display: flex;
-  justify-content: center;
-  background-color: white;
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  border: inset 3px black;
+  text-shadow: 1px 1px 2px black;
+  font-family: 'Bumbastika', Arial, Helvetica, sans-serif;
+  font-size: 2.5rem;
   border-radius: 10px;
+  color: white;
   grid-area: 1 / 2 / 1 / 2;
+  -webkit-text-stroke: 3px black;
+  display: grid;
+  justify-content: space-between;
 }
 
 .game-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: 1fr 2fr 2fr;
   flex-grow: 1;
   align-content: space-between;
   margin: auto;
   margin-top: 50px;
   height: 95vh;
   width: 95vw;
-}
-
-.start-button {
-  background-color: aquamarine;
-  color: blue;
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  display: block;
-  position: absolute;
-  top: calc(50vh - 50px);
-  left: calc(50vw - 100px);
-  height: 100px;
-  width: 200px;
-  box-shadow: 7px 7px 0 0 darkcyan;
-  border-radius: 1000px;
-  cursor: pointer;
-}
-
-.start-button:hover {
-  box-shadow: none;
-  transform: translate(10px, 10px);
 }
 
 .control-board {
@@ -81,6 +74,14 @@ p {
   align-items: center;
   margin: 10px;
   grid-area: 2 / 2 / 2 / 2;
+}
+
+.text-effect-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-area: 2 / 3 / 2 / 3;
 }
 
 .character {
@@ -111,30 +112,29 @@ p {
 
 .arrow::before {
   content: "";
-  top: 10px;
-  left: 20px;
+  top: 50%;
+  left: 50%;
   display: block;
-  transform: rotate(-45deg) translateY(-50px);
+  transform: translate(-50%, -50%) rotate(45deg);
   position: absolute;
-  height: 50px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
   background-color: var(--arrow-color);
-  border-radius: 5px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
 .arrow::after {
   content: "";
   z-index: -1;
-  top: 10px;
-  left: 20px;
-  height: 50px;
-  width: 30px;
+  top: 50%;
+  left: 50%;
+  height: 20px;
+  width: 20px;
   display: block;
   position: absolute;
-  transform: rotate(-45deg) translateY(-57px);
+  transform: translate(-50%, -50%) rotate(45deg);
   background-color: var(--arrow-outline);
-  border: solid var(--arrow-outline) 5px;
-  border-radius: 5px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   animation-duration: 3s;
   animation-name: glow;
   animation-iteration-count: infinite;
@@ -179,10 +179,6 @@ p {
   grid-area: 2 / 1 / 4 / 1;
 }
 
-.hidden {
-  display: none;
-}
-
 @media only screen and (max-width: 600px) {
   .arrow-container {
     height: 70px;
@@ -208,4 +204,252 @@ p {
     top: 25px;
     left: 30px;
   }
+}
+
+
+:root {
+  --lerp-0: 1; /* === sin(90deg) */
+  --lerp-1: calc(sin(30deg));
+  --lerp-2: calc(sin(20deg));
+  --lerp-3: calc(sin(10deg));
+  --lerp-4: 0;
+}
+
+h1 {
+  position: fixed;
+  top: var(--size-4);
+  right: var(--size-4);
+  margin: 0;
+  color: var(--gray-0);
+}
+
+.block:nth-of-type(1){--hue: 10;}
+.block:nth-of-type(2){--hue: 210;}
+.block:nth-of-type(3){--hue: 290;}
+.block:nth-of-type(4){--hue: 340;}
+.block:nth-of-type(5){--hue: 30;}
+.block:nth-of-type(6){--hue: 220;}
+.block:nth-of-type(7){--hue: 320;}
+.block:nth-of-type(8){--hue: 280;}
+.block:nth-of-type(9){--hue: 240;}
+
+.blocks {
+  display: flex;
+  list-style-type: none;
+  padding: var(--size-2);
+  border-radius: var(--radius-3);
+  gap: var(--size-4);
+  background: hsl(0 0% 100% / 0.5);
+  box-shadow: 
+    0 2px 0 0 hsl(0 0% 100% / 0.5) inset,
+    0 2px 0 0 hsl(0 0% 25% / 0.5);
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  margin-top: 20px;
+}
+
+.blocks:hover {
+  --show: 1;
+}
+
+.block {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  transition: all 0.2s;
+  flex: calc(0.2 + (var(--lerp, 0) * 1.5));
+  max-width: 100px;
+  position: relative;
+}
+
+.block:after {
+  content: '';
+  width: 5%;
+  aspect-ratio: 1;
+  background: var(--text-1);
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  border-radius: var(--radius-3);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.block:before {
+  content: '';
+  position: absolute;
+  width: calc(100% + var(--size-4));
+  bottom: 0;
+  aspect-ratio: 1 / 2;
+  left: 50%;
+  transition: transform 0.2s;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) scaleY(var(--show, 0));
+  z-index: -1;
+}
+
+.block .block__item {
+  transition: outline 0.2s;
+  outline: transparent var(--size-1) solid;
+}
+
+.block svg {
+  width: 80%;
+  transition: all 0.2s;
+  stroke: var(--gray-1);
+}
+
+:is(.block:focus-visible) .block__item {
+  outline: var(--gray-1) var(--size-1) solid;
+  border-radius: var(--radius-3);
+}
+
+.block {
+  outline: none;
+}
+
+.block__item {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-2);
+  background:
+    linear-gradient(hsl(0 0% 100% / 0.1), transparent),
+    hsl(var(--hue, 10) 70% 60%);
+  display: grid;
+  place-items: center;
+  transition: all 0.2s;
+  box-shadow:
+    0 2px 0 0 hsl(0 0% 100% / 0.5) inset,
+    0 2px 0 0 hsl(0 0% 25% / 0.5);
+  transform-origin: 50% 100%;
+  position: relative;
+  translate: 0 calc(var(--lerp) * 75%);
+}
+
+
+.blocks {
+  background: hsl(0 0% 0% / 0.5);
+}
+
+
+:is(.block:hover, .block:focus-visible) {
+  --lerp: var(--lerp-0);
+  z-index: 5;
+}
+.block:has( + :is(.block:hover, .block:focus-visible)),
+:is(.block:hover, .block:focus-visible) + .block {
+  --lerp: var(--lerp-1);
+  z-index: 4;
+}
+.block:has( + .block + :is(.block:hover, .block:focus-visible)),
+:is(.block:hover, .block:focus-visible) + .block + .block {
+  --lerp: var(--lerp-2);
+  z-index: 3;
+}
+.block:has( + .block + .block + :is(.block:hover, .block:focus-visible)),
+:is(.block:hover, .block:focus-visible) + .block + .block + .block {
+  --lerp: var(--lerp-3);
+  z-index: 2;
+}
+.block:has( + .block + .block + .block + :is(.block:hover, .block:focus-visible)),
+:is(.block:hover, .block:focus-visible) + .block + .block + .block + .block {
+  --lerp: var(--lerp-4);
+  z-index: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+footer.music-player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+}
+
+.music-info {
+  display: flex;
+  align-items: center;
+}
+
+.thumbnail {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.song-details {
+  display: flex;
+  flex-direction: column;
+}
+
+#song-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.progress-bar-container {
+  flex-grow: 1;
+  margin: 0 20px;
+}
+
+#progress-bar {
+  width: 100%;
+}
+
+
+.progress-bar-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.thumbnail {
+  width: 50px;
+  height: 50px;
+  background-color: #555;
+  margin-right: 0 auto;
+  margin-left: 0.5vw;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+}
+
+.progress-details {
+  flex: 1;
+  margin: 0 20px;
+}
+
+.progress-bar {
+  width: 99%;
+  height: 10px;
+  background-color: #555;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background-color: #e63dc1;
+  width: 0;
+  transition: width 0.1s;
 }
