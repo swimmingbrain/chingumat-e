@@ -10,6 +10,9 @@ const progress = document.getElementById('progress');
 const timeDisplay = document.getElementById('time-display');
 const textEffect = document.getElementById("text-effect");
 
+textEffect.style.transition = "opacity 0.3s";
+textEffect.style.opacity = 0;
+
 // Define the character poses paths
 const CHARACTER_POSES = [
   "../assets/character/cattobara/pose-a.png",
@@ -33,6 +36,7 @@ const boardTopBoundary = controlBoard.getBoundingClientRect().top;
 const triggerAudio = (audioFile, volume=1) => {
   const sound = new Audio(audioFile);
   sound.volume = volume;
+  if(isMuted) sound.muted = true;
   sound.play();
   return sound;
 };
@@ -55,12 +59,25 @@ const processKeyInput = (event) => {
   const arrowIndex = currentActiveArrow.getAttribute("data-arrow");
   const currentTime = new Date().getTime();
   const timeDifference = currentTime - arrowSpawnTime;
-  const accuracyScore = Math.max(0, 100 - Math.abs(500-timeDifference)); // Adjust the scoring logic as needed
+  const accuracyScore = Math.max(0, 150 - Math.abs(500-timeDifference)); // Adjust the scoring logic as needed
   console.log(`Time difference: ${timeDifference} ms`);
-  if (keyIndex == arrowIndex) {
-    textEffect.data = "../assets/effects/text_perfect.svg";
-    currentActiveArrow.children[keyIndex].style.setProperty("--arrow-outline", "lightgreen");
-    currentActiveArrow.children[keyIndex].style.setProperty("--arrow-color", "lightgreen");
+  if (keyIndex == arrowIndex && !currentActiveArrow.processed) {
+    currentActiveArrow.processed = true;
+    textEffect.style.opacity = 0;
+    setTimeout(() => {
+      textEffect.data = "../assets/effects/text_perfect.svg";
+      textEffect.style.opacity = 1;
+    }, 300);
+    let color;
+    if (accuracyScore < 30) {
+        color = "gray";
+    } else if (accuracyScore < 60) {
+        color = "orange";
+    } else {
+        color = "lightgreen";
+    }
+    currentActiveArrow.children[keyIndex].style.setProperty("--arrow-outline", color);
+    currentActiveArrow.children[keyIndex].style.setProperty("--arrow-color", color);
     gameScore += accuracyScore;
     scoreCounter.innerHTML = `${gameScore}`;
     const winSounds = ["../assets/effects/win1.wav", "../assets/effects/win2.wav", "../assets/effects/win3.wav"];
@@ -69,7 +86,14 @@ const processKeyInput = (event) => {
     updateCharacterPose();
     currentActiveArrow.clicked = true;
   } else {
-    textEffect.data = "../assets/effects/text_oops.svg";
+    textEffect.style.opacity = 0;
+    setTimeout(() => {
+      textEffect.data = "../assets/effects/text_oops.svg";
+      textEffect.style.opacity = 1;
+    }, 300);
+    gameScore -= 10;
+    if (gameScore < 0) gameScore = 0;
+    scoreCounter.innerHTML = `${gameScore}`;
     triggerAudio("../assets/effects/fail.wav");
   }
 };
@@ -122,7 +146,14 @@ const moveArrowRow = (row, speed) => {
     row.animate(animationSettings, animationOptions);
     setTimeout(() => {
       if (!row.clicked) {
-        textEffect.data = "../assets/effects/text_missed.svg";
+        textEffect.style.opacity = 0;
+        setTimeout(() => {
+          textEffect.data = "../assets/effects/text_missed.svg";
+          gameScore -= 25;
+          if (gameScore < 0) gameScore = 0;
+          scoreCounter.innerHTML = `${gameScore}`;
+          textEffect.style.opacity = 1;
+        }, 300);
         triggerAudio("../assets/effects/fail.wav");
       }
       row.remove();
@@ -130,9 +161,40 @@ const moveArrowRow = (row, speed) => {
   });
 };
 
+startButton.addEventListener("click", () => {
+  startButton.classList.add("hidden");
+  controlBoard.classList.remove("hidden");
+  initiateGame(0.8, 500);
+});
+
+const muteButton = document.getElementById("mute-button");
+let isMuted = false;
+
+muteButton.addEventListener("click", () => {
+  isMuted = !isMuted;
+
+});
+
+const restartButton = document.getElementById("restart-button");
+restartButton.addEventListener("click", () => {
+  if (gameMusic) {
+    gameMusic.pause();
+    gameMusic.currentTime = 0;
+  }
+  const checkArrowsGone = setInterval(() => {
+    if (spawner.children.length === 0) {
+      clearInterval(checkArrowsGone);
+      initiateGame(0.4, 500);
+    }
+  }, 100);
+  gameScore = 0;
+  scoreCounter.innerHTML = `${gameScore}`;
+  clearInterval(gameInterval);
+});
+
 // Start the game
 const initiateGame = (speed, interval) => {
-  gameMusic = triggerAudio("../assets/music/sample-a.mp3", 0.2);
+  gameMusic = triggerAudio("../assets/music/ROSÉ & Bruno Mars - APT.mp3", 0.2);
   document.addEventListener("keydown", processKeyInput);
   gameInterval = setInterval(() => {
     const randomColorIndex = Math.floor(Math.random() * 6);
@@ -144,21 +206,15 @@ const initiateGame = (speed, interval) => {
     clearInterval(gameInterval);
     document.removeEventListener("keydown", processKeyInput);
   });
+
+  // Set audio duration once metadata is loaded
+  gameMusic.addEventListener('loadedmetadata', () => {
+    updateProgress();
+  });
+
+  // Update progress bar and time display
+  gameMusic.addEventListener('timeupdate', updateProgress);
 };
-
-startButton.addEventListener("click", () => {
-  startButton.classList.add("hidden");
-  controlBoard.classList.remove("hidden");
-  initiateGame(0.4, 500);
-});
-
-// Set audio duration once metadata is loaded
-gameMusic.addEventListener('loadedmetadata', () => {
-  updateProgress();
-});
-
-// Update progress bar and time display
-gameMusic.addEventListener('timeupdate', updateProgress);
 
 function updateProgress() {
   const currentTime = Math.floor(gameMusic.currentTime);
