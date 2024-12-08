@@ -16,14 +16,15 @@
 }
 
 body {
-  background: url("../assets/effects/bg_pattern.svg") rgb(59, 2, 47) no-repeat;
-  background-position: center;
-  background-size: cover;
+  background: 
+    url("../assets/effects/bg_pattern.svg") center center / cover no-repeat, /* SVG layer */
+    linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(128,6,53,1) 100%); /* Gradient layer */
+  background-repeat: no-repeat;
   display: grid;
   overflow: hidden;
   place-items: center;
   min-height: 100vh;
-  font-family:  'Google Sans', sans-serif, system-ui;
+  font-family: 'Google Sans', sans-serif, system-ui;
 }
 
 p {
@@ -43,6 +44,12 @@ p {
   -webkit-text-stroke: 3px black;
   display: grid;
   justify-content: space-between;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .game-container {
@@ -58,8 +65,8 @@ p {
 }
 
 .control-board {
-  --arrow-outline: white;
-  --arrow-color: rgb(34, 34, 34);
+  --arrow-outline: #0091ad;
+  --arrow-color: #ffffff;
   grid-area: 2 / 1 / 2 / 1;
   background-color: transparent;
   display: flex;
