@@ -52,6 +52,37 @@ const updateCharacterPose = () => {
   avatarImage.src = activePose;
 };
 
+// Handle GPIO input
+let previousGPIOState = {};
+
+const pollGPIOStates = async () => {
+  try {
+    const response = await fetch("http://raspberrypi:5000/gpio_status"); // Replace <raspberry-pi-ip> with the Pi's IP address
+    const gpioStates = await response.json();
+
+    const gpioToArrow = {
+      12: "ArrowLeft",
+      16: "ArrowUp",
+      21: "ArrowDown",
+      20: "ArrowRight",
+    };
+
+    for (const [pin, state] of Object.entries(gpioStates)) {
+      const correspondingKey = gpioToArrow[pin];
+
+      // Process game logic if GPIO pin is pressed
+      if (state === 1 && (!previousGPIOState[pin] || previousGPIOState[pin] === 0)) {
+        processKeyInput({ key: correspondingKey });
+      }
+
+      // Update the previous state
+      previousGPIOState[pin] = state;
+    }
+  } catch (error) {
+    console.error("Error fetching GPIO states:", error);
+  }
+};
+
 // Handle keyboard inputs
 const processKeyInput = (event) => {
   const keyIndex = ARROW_KEYS.indexOf(event.key);
@@ -69,9 +100,9 @@ const processKeyInput = (event) => {
       textEffect.style.opacity = 1;
     }, 300);
     let color;
-    if (accuracyScore < 30) {
+    if (accuracyScore < 15) {
         color = "gray";
-    } else if (accuracyScore < 60) {
+    } else if (accuracyScore < 30) {
         color = "orange";
     } else {
         color = "lightgreen";
@@ -124,7 +155,7 @@ const moveArrowRow = (row, speed) => {
   const threshold = rowTopBoundary - boardTopBoundary;
   arrowSpawnTime = new Date().getTime();
   setTimeout(() => {
-    const MIN_DISTANCE = 60;
+    const MIN_DISTANCE = 120;
     const MAX_DISTANCE = 160;
 
     setTimeout(() => {
@@ -139,7 +170,7 @@ const moveArrowRow = (row, speed) => {
     const animationSettings = [{ transform: "translateY(-7500px)" }];
 
     const animationOptions = {
-      duration: (1 / speed) * 10000,
+      duration: (1 / speed) * 9000,
       iterations: Infinity,
     };
 
@@ -164,7 +195,7 @@ const moveArrowRow = (row, speed) => {
 startButton.addEventListener("click", () => {
   startButton.classList.add("hidden");
   controlBoard.classList.remove("hidden");
-  initiateGame(0.8, 500);
+  initiateGame(0.2, 1500);
 });
 
 const muteButton = document.getElementById("mute-button");
@@ -184,7 +215,7 @@ restartButton.addEventListener("click", () => {
   const checkArrowsGone = setInterval(() => {
     if (spawner.children.length === 0) {
       clearInterval(checkArrowsGone);
-      initiateGame(0.4, 500);
+      initiateGame(0.2, 1500);
     }
   }, 100);
   gameScore = 0;
@@ -195,6 +226,7 @@ restartButton.addEventListener("click", () => {
 // Start the game
 const initiateGame = (speed, interval) => {
   gameMusic = triggerAudio("../assets/music/ROSÉ & Bruno Mars - APT.mp3", 0.2);
+  setInterval(pollGPIOStates, 10); // Poll GPIO states
   document.addEventListener("keydown", processKeyInput);
   gameInterval = setInterval(() => {
     const randomColorIndex = Math.floor(Math.random() * 6);
