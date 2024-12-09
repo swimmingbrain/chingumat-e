@@ -102,7 +102,7 @@ const processKeyInput = (event) => {
     let color;
     if (accuracyScore < 15) {
         color = "gray";
-    } else if (accuracyScore < 30) {
+    } else if (accuracyScore < 40) {
         color = "orange";
     } else {
         color = "lightgreen";
