@@ -173,4 +173,4 @@ They say Chingubara never dances alone. As each new dancer steps in, the beat gr
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details. Please note the important notice about the logo and original character in the License file.
