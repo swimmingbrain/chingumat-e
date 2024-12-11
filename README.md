@@ -160,7 +160,7 @@ Months passed, and one day, Chingu stumpled upon something extraordinary, Neko's
 
 This wasn't just a simple costume. As Chingu made the capybara suit, something magical happened. Neko's essence, full of rhythm and warmth, awakened with it. This time, stronger and clearer than ever.
 
-Now, as **Chingubara, the chat in a capybara costume**, Chingu dances not just for joy but to honor Neko's memory. Chingubara's mission is to keep the music alive, seeking partners to join in the rhythm and ensure that **no one has to dance alone**, just as Neko once did for Chingu.
+Now, as **Chingubara, the cat in a capybara costume**, Chingu dances not just for joy but to honor Neko's memory. Chingubara's mission is to keep the music alive, seeking partners to join in the rhythm and ensure that **no one has to dance alone**, just as Neko once did for Chingu.
 
 ### The Legend Grows
 
