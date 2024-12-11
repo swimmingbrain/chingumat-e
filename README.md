@@ -57,13 +57,13 @@ Chingumate uses the following hardware:
 
 ## Screenshots
 
-### Game Interface
-![Game Screenshot](./assets/branding/screenshot.png)
-
 ### Character Animation
 The original character is a cat in a capybara costume, called **Chingubara**. Dancing is the only thing that makes him happy, but he doesn't like to dance alone. For more about the lore, scroll down to the end of this README file!
 
-<img src="./assets/branding/poses.gif" alt="Character Poses" width="100"/>
+<img src="./assets/branding/poses.gif" alt="Character Poses" width="150"/>
+
+### Game Interface
+![Game Screenshot](./assets/branding/screenshot.png)
 
 ---
 
