@@ -9,12 +9,9 @@ const audio = document.getElementById('audio');
 const progress = document.getElementById('progress');
 const timeDisplay = document.getElementById('time-display');
 const textEffect = document.getElementById("text-effect");
-<<<<<<< HEAD
 
 textEffect.style.transition = "opacity 0.3s";
 textEffect.style.opacity = 0;
-=======
->>>>>>> b2de112 (feat: added music bar and effects)
 
 // Define the character poses paths
 const CHARACTER_POSES = [
@@ -39,10 +36,7 @@ const boardTopBoundary = controlBoard.getBoundingClientRect().top;
 const triggerAudio = (audioFile, volume=1) => {
   const sound = new Audio(audioFile);
   sound.volume = volume;
-<<<<<<< HEAD
   if(isMuted) sound.muted = true;
-=======
->>>>>>> b2de112 (feat: added music bar and effects)
   sound.play();
   return sound;
 };
@@ -96,7 +90,6 @@ const processKeyInput = (event) => {
   const arrowIndex = currentActiveArrow.getAttribute("data-arrow");
   const currentTime = new Date().getTime();
   const timeDifference = currentTime - arrowSpawnTime;
-<<<<<<< HEAD
   const accuracyScore = Math.max(0, 150 - Math.abs(500-timeDifference)); // Adjust the scoring logic as needed
   console.log(`Time difference: ${timeDifference} ms`);
   if (keyIndex == arrowIndex && !currentActiveArrow.processed) {
@@ -116,14 +109,6 @@ const processKeyInput = (event) => {
     }
     currentActiveArrow.children[keyIndex].style.setProperty("--arrow-outline", color);
     currentActiveArrow.children[keyIndex].style.setProperty("--arrow-color", color);
-=======
-  const accuracyScore = Math.max(0, 100 - Math.abs(500-timeDifference)); // Adjust the scoring logic as needed
-  console.log(`Time difference: ${timeDifference} ms`);
-  if (keyIndex == arrowIndex) {
-    textEffect.data = "../assets/effects/text_perfect.svg";
-    currentActiveArrow.children[keyIndex].style.setProperty("--arrow-outline", "lightgreen");
-    currentActiveArrow.children[keyIndex].style.setProperty("--arrow-color", "lightgreen");
->>>>>>> b2de112 (feat: added music bar and effects)
     gameScore += accuracyScore;
     scoreCounter.innerHTML = `${gameScore}`;
     const winSounds = ["../assets/effects/win1.wav", "../assets/effects/win2.wav", "../assets/effects/win3.wav"];
@@ -132,7 +117,6 @@ const processKeyInput = (event) => {
     updateCharacterPose();
     currentActiveArrow.clicked = true;
   } else {
-<<<<<<< HEAD
     textEffect.style.opacity = 0;
     setTimeout(() => {
       textEffect.data = "../assets/effects/text_oops.svg";
@@ -141,9 +125,6 @@ const processKeyInput = (event) => {
     gameScore -= 10;
     if (gameScore < 0) gameScore = 0;
     scoreCounter.innerHTML = `${gameScore}`;
-=======
-    textEffect.data = "../assets/effects/text_oops.svg";
->>>>>>> b2de112 (feat: added music bar and effects)
     triggerAudio("../assets/effects/fail.wav");
   }
 };
@@ -174,11 +155,7 @@ const moveArrowRow = (row, speed) => {
   const threshold = rowTopBoundary - boardTopBoundary;
   arrowSpawnTime = new Date().getTime();
   setTimeout(() => {
-<<<<<<< HEAD
     const MIN_DISTANCE = 120;
-=======
-    const MIN_DISTANCE = 60;
->>>>>>> b2de112 (feat: added music bar and effects)
     const MAX_DISTANCE = 160;
 
     setTimeout(() => {
@@ -193,18 +170,13 @@ const moveArrowRow = (row, speed) => {
     const animationSettings = [{ transform: "translateY(-7500px)" }];
 
     const animationOptions = {
-<<<<<<< HEAD
       duration: (1 / speed) * 9000,
-=======
-      duration: (1 / speed) * 10000,
->>>>>>> b2de112 (feat: added music bar and effects)
       iterations: Infinity,
     };
 
     row.animate(animationSettings, animationOptions);
     setTimeout(() => {
       if (!row.clicked) {
-<<<<<<< HEAD
         textEffect.style.opacity = 0;
         setTimeout(() => {
           textEffect.data = "../assets/effects/text_missed.svg";
@@ -213,33 +185,11 @@ const moveArrowRow = (row, speed) => {
           scoreCounter.innerHTML = `${gameScore}`;
           textEffect.style.opacity = 1;
         }, 300);
-=======
-        textEffect.data = "../assets/effects/text_missed.svg";
->>>>>>> b2de112 (feat: added music bar and effects)
         triggerAudio("../assets/effects/fail.wav");
       }
       row.remove();
     }, (1 / speed) * 1650);
   });
-<<<<<<< HEAD
-=======
-};
-
-// Start the game
-const initiateGame = (speed, interval) => {
-  gameMusic = triggerAudio("../assets/music/sample-a.mp3", 0.2);
-  document.addEventListener("keydown", processKeyInput);
-  gameInterval = setInterval(() => {
-    const randomColorIndex = Math.floor(Math.random() * 6);
-    const selectedColor = COLOR_PALETTE[randomColorIndex];
-    generateArrowRow(selectedColor, speed);
-  }, interval);
-
-  gameMusic.addEventListener("ended", () => {
-    clearInterval(gameInterval);
-    document.removeEventListener("keydown", processKeyInput);
-  });
->>>>>>> b2de112 (feat: added music bar and effects)
 };
 
 startButton.addEventListener("click", () => {
@@ -248,7 +198,6 @@ startButton.addEventListener("click", () => {
   initiateGame(0.2, 1500);
 });
 
-<<<<<<< HEAD
 const muteButton = document.getElementById("mute-button");
 let isMuted = false;
 
@@ -298,15 +247,6 @@ const initiateGame = (speed, interval) => {
   // Update progress bar and time display
   gameMusic.addEventListener('timeupdate', updateProgress);
 };
-=======
-// Set audio duration once metadata is loaded
-gameMusic.addEventListener('loadedmetadata', () => {
-  updateProgress();
-});
-
-// Update progress bar and time display
-gameMusic.addEventListener('timeupdate', updateProgress);
->>>>>>> b2de112 (feat: added music bar and effects)
 
 function updateProgress() {
   const currentTime = Math.floor(gameMusic.currentTime);
@@ -324,8 +264,4 @@ function updateProgress() {
 
   const progressPercent = (gameMusic.currentTime / gameMusic.duration) * 100;
   progress.style.width = `${progressPercent}%`;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> b2de112 (feat: added music bar and effects)

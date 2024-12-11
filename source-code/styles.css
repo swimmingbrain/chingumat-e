@@ -16,25 +16,15 @@
 }
 
 body {
-<<<<<<< HEAD
   background: 
     url("../assets/effects/bg_pattern.svg") center center / cover no-repeat, /* SVG layer */
     linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(128,6,53,1) 100%); /* Gradient layer */
   background-repeat: no-repeat;
-=======
-  background: url("../assets/effects/bg_pattern.svg") rgb(59, 2, 47) no-repeat;
-  background-position: center;
-  background-size: cover;
->>>>>>> b2de112 (feat: added music bar and effects)
   display: grid;
   overflow: hidden;
   place-items: center;
   min-height: 100vh;
-<<<<<<< HEAD
   font-family: 'Google Sans', sans-serif, system-ui;
-=======
-  font-family:  'Google Sans', sans-serif, system-ui;
->>>>>>> b2de112 (feat: added music bar and effects)
 }
 
 p {
@@ -54,15 +44,12 @@ p {
   -webkit-text-stroke: 3px black;
   display: grid;
   justify-content: space-between;
-<<<<<<< HEAD
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-=======
->>>>>>> b2de112 (feat: added music bar and effects)
 }
 
 .game-container {
