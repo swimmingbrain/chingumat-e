@@ -19,7 +19,8 @@
 6. [How to Run](#how-to-run)
 7. [Technologies Used](#technologies-used)
 8. [Contributing](#contributing)
-9. [License](#license)
+9. [Extra: The Tale of Chingubara](#extra-the-tale-of-chingubara)
+10. [License](#license)
 
 ---
 
