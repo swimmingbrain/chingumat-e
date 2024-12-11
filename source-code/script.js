@@ -5,15 +5,20 @@ let gameScore = 0;
 let arrowSpawnTime = null;
 let gameInterval = null;
 let gameMusic = null;
-const audio = document.getElementById('audio');
-const progress = document.getElementById('progress');
-const timeDisplay = document.getElementById('time-display');
+let isMuted = false;
+
+const audio = document.getElementById("audio");
+const progress = document.getElementById("progress");
+const timeDisplay = document.getElementById("time-display");
 const textEffect = document.getElementById("text-effect");
+const avatarImage = document.querySelector(".character");
+const controlBoard = document.getElementById("control-board");
+const spawner = document.getElementById("row-spawner");
+const startButton = document.getElementById("start-button");
+const scoreCounter = document.getElementById("score");
+const muteButton = document.getElementById("mute-button");
+const restartButton = document.getElementById("restart-button");
 
-textEffect.style.transition = "opacity 0.3s";
-textEffect.style.opacity = 0;
-
-// Define the character poses paths
 const CHARACTER_POSES = [
   "../assets/character/cattobara/pose-a.png",
   "../assets/character/cattobara/pose-b.png",
@@ -23,41 +28,34 @@ const CHARACTER_POSES = [
 ];
 
 let activePose = CHARACTER_POSES[0];
-const avatarImage = document.querySelector(".character");
+let previousGPIOState = {};
 
-const controlBoard = document.getElementById("control-board");
-const spawner = document.getElementById("row-spawner");
-const startButton = document.getElementById("start-button");
-const scoreCounter = document.getElementById("score");
+textEffect.style.transition = "opacity 0.3s";
+textEffect.style.opacity = 0;
 
-const boardTopBoundary = controlBoard.getBoundingClientRect().top;
-
-// Play audio files for game events
-const triggerAudio = (audioFile, volume=1) => {
+// Handle audio playback
+const triggerAudio = (audioFile, volume = 1) => {
   const sound = new Audio(audioFile);
   sound.volume = volume;
-  if(isMuted) sound.muted = true;
+  sound.muted = isMuted;
   sound.play();
   return sound;
 };
 
-// Choose a random pose from the list and update the character's pose
+// Randomly update character pose
 const updateCharacterPose = () => {
   let newPose;
   do {
     newPose = CHARACTER_POSES[Math.floor(Math.random() * CHARACTER_POSES.length)];
   } while (newPose === activePose);
-
   activePose = newPose;
   avatarImage.src = activePose;
 };
 
-// Handle GPIO input
-let previousGPIOState = {};
-
+// Periodically fetch GPIO states from the server and process input
 const pollGPIOStates = async () => {
   try {
-    const response = await fetch("http://raspberrypi:5000/gpio_status"); // Replace <raspberry-pi-ip> with the Pi's IP address
+    const response = await fetch("http://raspberrypi:5000/gpio_status");
     const gpioStates = await response.json();
 
     const gpioToArrow = {
@@ -69,13 +67,9 @@ const pollGPIOStates = async () => {
 
     for (const [pin, state] of Object.entries(gpioStates)) {
       const correspondingKey = gpioToArrow[pin];
-
-      // Process game logic if GPIO pin is pressed
       if (state === 1 && (!previousGPIOState[pin] || previousGPIOState[pin] === 0)) {
         processKeyInput({ key: correspondingKey });
       }
-
-      // Update the previous state
       previousGPIOState[pin] = state;
     }
   } catch (error) {
@@ -83,37 +77,34 @@ const pollGPIOStates = async () => {
   }
 };
 
-// Handle keyboard inputs
+// Handle input
 const processKeyInput = (event) => {
   const keyIndex = ARROW_KEYS.indexOf(event.key);
-  if (!currentActiveArrow) return;
-  const arrowIndex = currentActiveArrow.getAttribute("data-arrow");
-  const currentTime = new Date().getTime();
+  if (!currentActiveArrow || currentActiveArrow.processed) return;
+
+  const arrowIndex = parseInt(currentActiveArrow.getAttribute("data-arrow"), 10);
+  const currentTime = Date.now();
   const timeDifference = currentTime - arrowSpawnTime;
-  const accuracyScore = Math.max(0, 150 - Math.abs(500-timeDifference)); // Adjust the scoring logic as needed
-  console.log(`Time difference: ${timeDifference} ms`);
-  if (keyIndex == arrowIndex && !currentActiveArrow.processed) {
+  const accuracyScore = Math.max(0, 150 - Math.abs(500 - timeDifference));
+
+  if (keyIndex === arrowIndex) {
     currentActiveArrow.processed = true;
     textEffect.style.opacity = 0;
     setTimeout(() => {
       textEffect.data = "../assets/effects/text_perfect.svg";
       textEffect.style.opacity = 1;
     }, 300);
-    let color;
-    if (accuracyScore < 15) {
-        color = "gray";
-    } else if (accuracyScore < 40) {
-        color = "orange";
-    } else {
-        color = "lightgreen";
-    }
+
+    const color = accuracyScore < 15 ? "gray" : accuracyScore < 40 ? "orange" : "lightgreen";
     currentActiveArrow.children[keyIndex].style.setProperty("--arrow-outline", color);
     currentActiveArrow.children[keyIndex].style.setProperty("--arrow-color", color);
+
     gameScore += accuracyScore;
-    scoreCounter.innerHTML = `${gameScore}`;
+    scoreCounter.textContent = gameScore;
+
     const winSounds = ["../assets/effects/win1.wav", "../assets/effects/win2.wav", "../assets/effects/win3.wav"];
-    const randomWinSound = winSounds[Math.floor(Math.random() * winSounds.length)];
-    triggerAudio(randomWinSound);
+    triggerAudio(winSounds[Math.floor(Math.random() * winSounds.length)]);
+
     updateCharacterPose();
     currentActiveArrow.clicked = true;
   } else {
@@ -122,38 +113,37 @@ const processKeyInput = (event) => {
       textEffect.data = "../assets/effects/text_oops.svg";
       textEffect.style.opacity = 1;
     }, 300);
-    gameScore -= 10;
-    if (gameScore < 0) gameScore = 0;
-    scoreCounter.innerHTML = `${gameScore}`;
+
+    gameScore = Math.max(0, gameScore - 10);
+    scoreCounter.textContent = gameScore;
     triggerAudio("../assets/effects/fail.wav");
   }
 };
 
-// Generate new arrows row
+// Create new arrow row
 const generateArrowRow = (highlightColor, speed) => {
   const arrowRow = controlBoard.cloneNode(true);
   arrowRow.style.position = "absolute";
-  const randomArrow = Math.floor(Math.random() * 4);
+  const randomArrow = Math.floor(Math.random() * ARROW_KEYS.length);
   arrowRow.setAttribute("data-arrow", randomArrow);
 
-  for (let i = 0; i < 4; i++) {
-    if (i === randomArrow) {
-      arrowRow.children[i].style.setProperty("--arrow-outline", highlightColor);
-    } else {
-      arrowRow.children[i].style.setProperty("--arrow-outline", "transparent");
-      arrowRow.children[i].style.setProperty("--arrow-color", "transparent");
-    }
-  }
+  Array.from(arrowRow.children).forEach((child, index) => {
+    const color = index === randomArrow ? highlightColor : "transparent";
+    child.style.setProperty("--arrow-outline", color);
+    child.style.setProperty("--arrow-color", color);
+  });
 
-  spawner.append(arrowRow);
+  spawner.appendChild(arrowRow);
   moveArrowRow(arrowRow, speed);
 };
 
-// Animate the arrow row
+// Animate arrow rows and handle logic for missed arrows
 const moveArrowRow = (row, speed) => {
+  const boardTopBoundary = controlBoard.getBoundingClientRect().top;
   const rowTopBoundary = row.getBoundingClientRect().top;
   const threshold = rowTopBoundary - boardTopBoundary;
-  arrowSpawnTime = new Date().getTime();
+  arrowSpawnTime = Date.now();
+
   setTimeout(() => {
     const MIN_DISTANCE = 120;
     const MAX_DISTANCE = 160;
@@ -161,30 +151,25 @@ const moveArrowRow = (row, speed) => {
     setTimeout(() => {
       currentActiveArrow = row;
       setTimeout(() => {
-        if (currentActiveArrow === row) {
-          currentActiveArrow = null;
-        }
+        if (currentActiveArrow === row) currentActiveArrow = null;
       }, (1 / speed) * MAX_DISTANCE);
     }, (1 / speed) * (threshold - MIN_DISTANCE));
 
-    const animationSettings = [{ transform: "translateY(-7500px)" }];
-
-    const animationOptions = {
+    row.animate([{ transform: "translateY(-7500px)" }], {
       duration: (1 / speed) * 9000,
       iterations: Infinity,
-    };
+    });
 
-    row.animate(animationSettings, animationOptions);
     setTimeout(() => {
       if (!row.clicked) {
         textEffect.style.opacity = 0;
         setTimeout(() => {
           textEffect.data = "../assets/effects/text_missed.svg";
-          gameScore -= 25;
-          if (gameScore < 0) gameScore = 0;
-          scoreCounter.innerHTML = `${gameScore}`;
           textEffect.style.opacity = 1;
         }, 300);
+
+        gameScore = Math.max(0, gameScore - 25);
+        scoreCounter.textContent = gameScore;
         triggerAudio("../assets/effects/fail.wav");
       }
       row.remove();
@@ -192,45 +177,45 @@ const moveArrowRow = (row, speed) => {
   });
 };
 
+// Start game when button is clicked
 startButton.addEventListener("click", () => {
   startButton.classList.add("hidden");
   controlBoard.classList.remove("hidden");
   initiateGame(0.2, 1500);
 });
 
-const muteButton = document.getElementById("mute-button");
-let isMuted = false;
-
+// Toggle mute state
 muteButton.addEventListener("click", () => {
   isMuted = !isMuted;
-
 });
 
-const restartButton = document.getElementById("restart-button");
+// Restart game and reset score
 restartButton.addEventListener("click", () => {
   if (gameMusic) {
     gameMusic.pause();
     gameMusic.currentTime = 0;
   }
+
   const checkArrowsGone = setInterval(() => {
     if (spawner.children.length === 0) {
       clearInterval(checkArrowsGone);
       initiateGame(0.2, 1500);
     }
   }, 100);
+
   gameScore = 0;
-  scoreCounter.innerHTML = `${gameScore}`;
+  scoreCounter.textContent = gameScore;
   clearInterval(gameInterval);
 });
 
-// Start the game
+// Initialize game, set up music and generate arrows
 const initiateGame = (speed, interval) => {
-  gameMusic = triggerAudio("../assets/music/ROSÉ & Bruno Mars - APT.mp3", 0.2);
-  setInterval(pollGPIOStates, 10); // Poll GPIO states
+  gameMusic = triggerAudio("../assets/music/beta.mp3", 0.2);
+  setInterval(pollGPIOStates, 10);
   document.addEventListener("keydown", processKeyInput);
+
   gameInterval = setInterval(() => {
-    const randomColorIndex = Math.floor(Math.random() * 6);
-    const selectedColor = COLOR_PALETTE[randomColorIndex];
+    const selectedColor = COLOR_PALETTE[Math.floor(Math.random() * COLOR_PALETTE.length)];
     generateArrowRow(selectedColor, speed);
   }, interval);
 
@@ -239,29 +224,20 @@ const initiateGame = (speed, interval) => {
     document.removeEventListener("keydown", processKeyInput);
   });
 
-  // Set audio duration once metadata is loaded
-  gameMusic.addEventListener('loadedmetadata', () => {
-    updateProgress();
-  });
-
-  // Update progress bar and time display
-  gameMusic.addEventListener('timeupdate', updateProgress);
+  gameMusic.addEventListener("loadedmetadata", updateProgress);
+  gameMusic.addEventListener("timeupdate", updateProgress);
 };
 
-function updateProgress() {
+const updateProgress = () => {
   const currentTime = Math.floor(gameMusic.currentTime);
   const duration = Math.floor(gameMusic.duration);
 
+  const formatTime = (min, sec) => `${min}:${sec.toString().padStart(2, "0")}`;
   const currentMinutes = Math.floor(currentTime / 60);
   const currentSeconds = currentTime % 60;
   const totalMinutes = Math.floor(duration / 60);
   const totalSeconds = duration % 60;
 
-  // Format time to display as mm:ss
-  const formatTime = (min, sec) => `${min}:${sec.toString().padStart(2, '0')}`;
-
   timeDisplay.textContent = `${formatTime(currentMinutes, currentSeconds)} / ${formatTime(totalMinutes, totalSeconds)}`;
-
-  const progressPercent = (gameMusic.currentTime / gameMusic.duration) * 100;
-  progress.style.width = `${progressPercent}%`;
-}
+  progress.style.width = `${(gameMusic.currentTime / gameMusic.duration) * 100}%`;
+};
