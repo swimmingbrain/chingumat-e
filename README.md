@@ -144,6 +144,30 @@ I welcome contributions! To contribute:
 
 ---
 
+## The Tale of Chingubara
+
+Once upon a time, there was a cat named Chingu, known for its wild spirit and love for music. Chingu roamed the forests of the Capybara Kingdom, where creatures lived in harmony and celebrated life with music and dancing. Among them was Neko, a gentle and kind capybara who became Chingu's closest friend.
+
+They were an inseparable pair, Chinu brought the energy, mischief and rhythm, while Neko grounded everything with wisdom and support. Together, they danced under the moonlight, their movements syncing perfectly, creating rhythms so good, that even the stars seemed to twinkle in time.
+
+### The Day the Music Stopped
+
+One fateful night, a terrible storm swept through the kingdom, tearing their world apart. The rivers swelled, the forests were flooded, and Chingu and Neko were separated. When the storm cleared, Neko was gone, leaving Chingu heartbroken and alone. Without Neko, the world felt muted, and Chingu stopped dancing.
+
+Months passed, and one day, Chingu stumpled upon something extraordinary, Neko's favorite dancing mat, where they had often danced together. Moved by the memories of joy, Chingu crafted a costume from the mat, transforming it into a capybara disguise to keep Neko's spirit close forever.
+
+### The Rhythm Lives On
+
+This wasn't just a simple costume. As Chingu made the capybara suit, something magical happened. Neko's essence, full of rhythm and warmth, awakened with it. This time, stronger and clearer than ever.
+
+Now, as **Chingubara, the chat in a capybara costume**, Chingu dances not just for joy but to honor Neko's memory. Chingubara's mission is to keep the music alive, seeking partners to join in the rhythm and ensure that **no one has to dance alone**, just as Neko once did for Chingu.
+
+### The Legend Grows
+
+They say Chingubara never dances alone. As each new dancer steps in, the beat grows stronger, as if the universe itself is listening. The legend whispers, that when enough hearts join together in the perfect rhythm, the spirit of Neko will return for one final, cosmic dance. Until then, Chingubara keeps moving each step a call to those who are ready to dance, and to never let the music end.
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
