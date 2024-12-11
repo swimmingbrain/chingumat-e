@@ -1,4 +1,7 @@
+
 # chingumat-e
+
+<div align="center">
 
 <img src="./assets/logo/logo-neon.png" alt="Project Logo" width="400"/>
 
@@ -6,6 +9,8 @@
 
 ![Demo GIF](./assets/branding/chingumate-preview.gif)  
 *(Above: Game preview, Game Tester: Franzi Tigges)*
+
+</div>
 
 ---
 
