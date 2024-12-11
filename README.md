@@ -39,8 +39,7 @@
 
 - 🎶 **Rhythm-based gameplay** synchronized with music.
 - 🎮 **Foot button controls** via GPIO pins on a Raspberry Pi.
-- 🖥️ **Responsive neon-themed web interface**.
-- ✨ **Custom animations and character poses**.
+- ✨ **Custom animations and original character poses**.
 - 🧳 **Portable setup**: Puzzle mats serve as lightweight, easy-to-carry foot buttons.
 
 ---
