@@ -5,7 +5,7 @@
 *A captivating rhythm-based game with GPIO support for Raspberry Pi.*
 
 ![Demo GIF](./assets/branding/chingumate-preview.gif)  
-*(Above: Game preview, Game Tester: Franziska Tigges)*
+*(Above: Game preview, Game Tester: Franzi Tigges)*
 
 ---
 
