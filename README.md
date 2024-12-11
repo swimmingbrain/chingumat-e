@@ -44,6 +44,8 @@
 
 ## Hardware Overview
 
+![chingumat-e hardware](./assets/branding/chingumate-hardware.gif)
+
 Chingumate uses the following hardware:
 
 - **Aluminum puzzle mats**: Function as foot buttons for gameplay.
