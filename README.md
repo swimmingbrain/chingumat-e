@@ -1,9 +1,8 @@
 
-# chingumat-e
 
 <div align="center">
 
-<img src="./assets/logo/logo-neon.png" alt="Project Logo" width="400"/>
+![chingumat-e](./assets/logo/logo-neon.png)
 
 *A captivating rhythm-based game with GPIO support for Raspberry Pi.*
 
@@ -11,6 +10,11 @@
 *(Above: Game preview, Game Tester: Franzi Tigges)*
 
 </div>
+
+
+## Introduction
+
+**Chingumate** is an interactive rhythm-based game designed to work with web browsers and hardware inputs via GPIO pins on a Raspberry Pi. The game leverages foot buttons made from lightweight aluminum puzzle mats, making it easy to transport in a backpack. Perfect for gaming enthusiasts and developers!
 
 ---
 
@@ -26,12 +30,6 @@
 8. [Contributing](#contributing)
 9. [Extra: The Tale of Chingubara](#extra-the-tale-of-chingubara)
 10. [License](#license)
-
----
-
-## Introduction
-
-**Chingumate** is an interactive rhythm-based game designed to work with web browsers and hardware inputs via GPIO pins on a Raspberry Pi. The game leverages foot buttons made from lightweight aluminum puzzle mats, making it easy to transport in a backpack. Perfect for gaming enthusiasts and developers!
 
 ---
 
@@ -58,7 +56,7 @@ Chingumate uses the following hardware:
 ## Screenshots
 
 ### Character Animation
-The original character is a cat in a capybara costume, called **Chingubara**. Dancing is the only thing that makes him happy, but he doesn't like to dance alone. For more about the lore, scroll down to the end of this README file!
+The original character is a cat in a capybara costume, called **Chingubara**. Dancing is the only thing that makes him happy, but he doesn't like to dance alone. For more about the lore, see [The Tale of Chingubara](#extra-the-tale-of-chingubara)!
 
 <img src="./assets/branding/poses.gif" alt="Character Poses" width="150"/>
 
@@ -131,7 +129,7 @@ python3 -m http.server 8000
 ## Technologies Used
 
 - **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Flask (Python)
+- **Backend**: [Flask](https://flask.palletsprojects.com/) (Python)
 - **Hardware**: Raspberry Pi, GPIO-connected aluminum puzzle mats
 - **Design**: Neon-inspired UI, custom animations, original character
 
