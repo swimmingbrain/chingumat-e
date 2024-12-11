@@ -67,11 +67,11 @@ The original character is a cat in a capybara costume, called **Chingubara**. Da
 ### Prerequisites
 
 1. **Hardware Setup**:
-   - Puzzle mats with aluminum contacts as foot buttons.
-   - Raspberry Pi with GPIO pins and connecting cables.
+   - Puzzle mats with aluminum contacts as foot buttons
+   - Raspberry Pi with GPIO pins and cables to connect
 
 2. **Software Setup**:
-   - Raspberry Pi running Python 3.
+   - Raspberry Pi running Python 3
    - Install required Python libraries:
      ```bash
      pip install flask flask-cors gpiozero
@@ -118,17 +118,17 @@ python3 -m http.server 8000
 
 1. Access the game in your browser from your PC:
    ```
-   http://<raspberry-ip>:8000/index.html
+   http://<raspberry-ip>:8000/source-code/game.html
    ```
 
-2. Step on the foot buttons to match the rhythm and enjoy the game!
+2. Step on the foot buttons to match the rhythm (or alternatively use the arrow keys on the PC's keyboard) and enjoy the game!
 
 ## Technologies Used
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Flask (Python)
 - **Hardware**: Raspberry Pi, GPIO-connected aluminum puzzle mats
-- **Design**: Neon-inspired UI, custom animations
+- **Design**: Neon-inspired UI, custom animations, original character
 
 ---
 
@@ -144,7 +144,7 @@ I welcome contributions! To contribute:
 
 ---
 
-## The Tale of Chingubara
+## Extra: The Tale of Chingubara
 
 Once upon a time, there was a cat named Chingu, known for its wild spirit and love for music. Chingu roamed the forests of the Capybara Kingdom, where creatures lived in harmony and celebrated life with music and dancing. Among them was Neko, a gentle and kind capybara who became Chingu's closest friend.
 
